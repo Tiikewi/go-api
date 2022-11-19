@@ -12,7 +12,7 @@ func main() {
 	port := ":8080"
 	s := CreateNewServer()
 	s.MountHandlers()
-	fmt.Println("Serving on port", port)
+	fmt.Println("Server runnin on port", port)
 	http.ListenAndServe(port, s.Router)
 }
 
