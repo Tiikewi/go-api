@@ -2,8 +2,8 @@ version: "3.8"
 
 services:
   backend:
-    container_name: backend-dev
-    image: backend-dev
+    container_name: backend
+    image: backend
     build:
       context: .
       target: development
@@ -11,3 +11,5 @@ services:
       - .:/backend
     ports:
       - 8080:8080
+    env_file:
+      - .env
