@@ -1,39 +1,33 @@
 package api
 
 import (
+	"encoding/json"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
-func executeRequest(req *http.Request, s *Server) *httptest.ResponseRecorder {
-	rr := httptest.NewRecorder()
-	s.Router.ServeHTTP(rr, req)
-
-	return rr
-}
-
-// checkResponseCode is a simple utility to check the response code
-// of the response
-func checkResponseCode(t *testing.T, expected, actual int) {
-	if expected != actual {
-		t.Errorf("Expected response code %d. Got %d\n", expected, actual)
-	}
-}
-
 func TestPing(t *testing.T) {
-	// Create a New Server Struct
-	s := CreateNewServer()
-	// Mount Handlers
-	s.MountHandlers()
+	req := httptest.NewRequest(http.MethodGet, "/ping", nil)
+	w := httptest.NewRecorder()
 
-	req, _ := http.NewRequest("GET", "/ping", nil)
+	const expectedMsg = "pong"
 
-	response := executeRequest(req, s)
+	getPing(w, req)
+	res := w.Result()
+	defer res.Body.Close()
 
-	checkResponseCode(t, http.StatusOK, response.Code)
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		t.Error("Error when reading response body. Error:", err)
+	}
 
-	require.Equal(t, "pong", response.Body.String())
+	response := make(map[string]string)
+	json.Unmarshal(body, &response)
+
+	if response["message"] != expectedMsg {
+		t.Error("Expected message: ", expectedMsg, ", Got", response["message"])
+	}
+
 }
