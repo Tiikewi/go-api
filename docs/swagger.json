@@ -1,0 +1,44 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a simple boilerplate for Go API.",
+        "title": "Golang example API",
+        "contact": {
+            "name": "Kimi Porthan"
+        },
+        "version": "0.1"
+    },
+    "host": "localhost:8080",
+    "paths": {
+        "/ping": {
+            "get": {
+                "description": "getPing returns json with message key.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Ping"
+                ],
+                "summary": "Get ponged back.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.PingResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "types.PingResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

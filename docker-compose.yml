@@ -2,11 +2,11 @@ version: "3.8"
 
 services:
   backend:
-    container_name: backend
+    container_name: backend-container
     image: backend
     build:
       context: .
-      target: development
+      dockerfile: Dockerfile
     volumes:
       - .:/backend
     ports:
