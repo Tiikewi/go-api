@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"go-api/pkg/api"
+	"go-api/pkg/db"
 	"net/http"
 	"os"
 
@@ -22,6 +23,10 @@ func main() {
 
 	s := api.CreateNewServer()
 
+	db := db.ConnectToDB()
+	defer db.Close()
+
 	fmt.Println("Server starting on port", port)
 	http.ListenAndServe(port, s.Router)
+
 }

@@ -10,7 +10,6 @@ import (
 
 type Server struct {
 	Router *chi.Mux
-	// Db, config can be added here
 }
 
 func CreateNewServer() *Server {
