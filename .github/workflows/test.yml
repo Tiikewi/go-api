@@ -15,10 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build the stack
-        run: docker-compose up -d
       - name: Add empty .env file
         run: touch .env
+      - name: Build the stack
+        run: docker-compose up -d
       - name: Build go
         run: go build ./... 
       - name: Test
