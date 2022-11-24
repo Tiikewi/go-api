@@ -7,7 +7,6 @@ import (
 	"go-api/pkg/db"
 	"io"
 	"net/http"
-	"net/http/httptest"
 	"os"
 	"testing"
 )
@@ -36,14 +35,15 @@ func TestPing(t *testing.T) {
 	setup()
 	defer DB.Close()
 
-	req := httptest.NewRequest(http.MethodGet, "/ping", nil)
-	w := httptest.NewRecorder()
+	// req := httptest.NewRequest(http.MethodGet, "/ping", nil)
+	// w := httptest.NewRecorder()
 
 	const expectedMsg = "10.9.3-MariaDB-1:10.9.3+maria~ubu2204"
 
-	s.getPing(w, req)
-	res := w.Result()
-	defer res.Body.Close()
+	// s.getPing(w, req)
+	// res := w.Result()
+	// defer res.Body.Close()
+	res, _ := http.Get("http://localhost:8080/ping")
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
