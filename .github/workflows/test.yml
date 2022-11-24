@@ -24,6 +24,8 @@ jobs:
         run: touch .env
       - name: Build the stack
         run: docker-compose up -d
+      - name: sleep
+        run: sleep 10
       - name: Build go
         run: go build ./...
       - name: Test
