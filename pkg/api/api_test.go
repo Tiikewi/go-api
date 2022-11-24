@@ -6,13 +6,15 @@ import (
 	"fmt"
 	"go-api/pkg/db"
 	"io"
+	"log"
+	"net"
 	"net/http"
-	"net/http/httptest"
 	"os"
 	"testing"
 )
 
 var s *Server
+
 var DB *sql.DB
 
 func setup() {
@@ -36,16 +38,26 @@ func TestPing(t *testing.T) {
 	setup()
 	defer DB.Close()
 
-	req := httptest.NewRequest(http.MethodGet, "http://localhost:8080/ping", nil)
-	w := httptest.NewRecorder()
+	//req := httptest.NewRequest(http.MethodGet, "/ping", nil)
+	//w := httptest.NewRecorder()
 
 	const expectedMsg = "10.9.3-MariaDB-1:10.9.3+maria~ubu2204"
 
-	s.getPing(w, req)
-	res := w.Result()
-	defer res.Body.Close()
+	l, err := net.Listen("tcp", ":8082")
+	if err != nil {
+		log.Fatal(err)
+	}
+	go func() {
+		http.HandleFunc("/ping", s.getPing)
+		log.Fatal(http.Serve(l, nil))
+	}()
 
-	body, err := io.ReadAll(res.Body)
+	resp, err := http.Get("http://localhost:8082/ping")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		t.Error("Error when reading response body. Error:", err)
 	}
