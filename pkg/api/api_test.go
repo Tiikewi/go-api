@@ -12,7 +12,10 @@ func TestPing(t *testing.T) {
 	const expectedMsg = "10.9.3-MariaDB-1:10.9.3+maria~ubu2204"
 	os.Setenv("ENVIROMENT", "test")
 
-	res, _ := http.Get("http://localhost:8080/ping")
+	res, err := http.Get("http://127.0.0.1:8080/ping")
+	if err != nil {
+		t.Error("Error when making request to /ping")
+	}
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
