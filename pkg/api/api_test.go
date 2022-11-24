@@ -45,7 +45,7 @@ func TestPing(t *testing.T) {
 	setup()
 	defer DB.Close()
 
-	req := httptest.NewRequest(http.MethodGet, "/ping", nil)
+	req := httptest.NewRequest(http.MethodGet, "http://localhost:8082/ping", nil)
 	w := httptest.NewRecorder()
 
 	const expectedMsg = "10.9.3-MariaDB-1:10.9.3+maria~ubu2204"
