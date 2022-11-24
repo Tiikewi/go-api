@@ -1,5 +1,9 @@
 version: "3.8"
 
+networks:
+  integration-tests-example-test:
+    driver: bridge
+
 services:
   mariadb:
     image: mariadb:10.9.3
@@ -16,6 +20,8 @@ services:
       - MYSQL_USER
       - MYSQL_PASSWORD
       - MYSQL_ROOT_PASSWORD
+    networks:
+      - integration-tests-example-test
     command: mysqld --sql_mode="IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
 
   backend:
@@ -32,10 +38,8 @@ services:
       - 8080:8080
     env_file:
       - .env
-
-networks:
-  default:
-    driver: bridge
+    networks:
+      - integration-tests-example-test
 
 volumes:
   db-volume:
