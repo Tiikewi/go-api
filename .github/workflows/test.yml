@@ -1,9 +1,9 @@
 name: Run tests
 on:
   push:
-    branches: ['main']
+    branches: ["main"]
   pull_request:
-    branches: ['main']
+    branches: ["main"]
 
 env:
   MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
@@ -22,8 +22,6 @@ jobs:
       - name: Add empty .env file
         run: touch .env
       - name: Build the stack
-        run: docker-compose up
-      - name: Build go
-        run: docker exec backend-container go build ./...
+        run: docker-compose up -d
       - name: Test
         run: docker exec backend-container go test ./... -v
