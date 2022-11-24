@@ -16,4 +16,4 @@ EXPOSE 8080
 
 # Reflex start server again when changes done to .go files.
 # Also generate swagger docs again on changes.
-CMD reflex -r '\.go$' -R 'docs/' -s -- sh -c 'swag init && go run .' -p 8080:8080
+CMD reflex -r '\.go$' -R 'docs/' -s -- sh -c 'swag init && go run .'
