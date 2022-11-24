@@ -31,6 +31,6 @@ func main() {
 	s := api.CreateNewServer()
 
 	fmt.Println("Server starting on port", port)
-	http.ListenAndServe(port, s.Router)
+	http.ListenAndServe("http://localhost:8080", s.Router)
 
 }
