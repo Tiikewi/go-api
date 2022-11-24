@@ -30,7 +30,6 @@ func main() {
 
 	s := api.CreateNewServer()
 
-	fmt.Println("Server starting on port", port)
+	fmt.Println("Server running on port", port)
 	http.ListenAndServe(port, s.Router)
-
 }
