@@ -25,10 +25,10 @@ func main() {
 		port = ":8080"
 	}
 
-	s := api.CreateNewServer()
+	db.ConnectToDB()
+	defer db.DB.Close()
 
-	db := db.ConnectToDB()
-	defer db.Close()
+	s := api.CreateNewServer()
 
 	fmt.Println("Server starting on port", port)
 	http.ListenAndServe(port, s.Router)

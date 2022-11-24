@@ -1,15 +1,24 @@
 package db
 
 import (
-	"database/sql"
 	"log"
+	"os"
 
 	"github.com/qustavo/dotsql"
 )
 
 func getQueryFile() *dotsql.DotSql {
 	// Queries in separete file for ease of maintenance.
-	dot, err := dotsql.LoadFromFile("pkg/db/queries.sql")
+	// get enviroment, because when testing, path changes.
+	env := os.Getenv("ENVIROMENT")
+	var path string
+	if env == "dev" {
+		path = "pkg/db/queries.sql"
+	} else {
+		path = "../db/queries.sql"
+	}
+
+	dot, err := dotsql.LoadFromFile(path)
 	if err != nil {
 		log.Fatal("Cannot load queries.sql")
 	}
@@ -17,10 +26,10 @@ func getQueryFile() *dotsql.DotSql {
 	return dot
 }
 
-func getVersion(db *sql.DB) string {
+func GetVersion() string {
 	dot := getQueryFile()
 
-	row, err := dot.QueryRow(db, "get-version")
+	row, err := dot.QueryRow(DB, "get-version")
 	if err != nil {
 		log.Fatal("Error when trying to connect to DB. Err:", err)
 	}
