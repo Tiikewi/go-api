@@ -18,14 +18,13 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
+    container: ubuntu
     steps:
       - uses: actions/checkout@v2
       - name: Add empty .env file
         run: touch .env
       - name: Build the stack
         run: docker-compose up -d
-      - name: sleep
-        run: sleep 10
       - name: Build go
         run: go build ./...
       - name: Test
