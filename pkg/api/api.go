@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
 
 	_ "go-api/docs"
@@ -23,7 +24,7 @@ func CreateNewServer() *Server {
 
 func (s *Server) MountHandlers() {
 	// Mount all Middleware here
-	//s.Router.Use(middleware.Logger)
+	s.Router.Use(middleware.Logger)
 
 	// Swagger documentation
 	s.Router.Get("/swagger/*", httpSwagger.Handler(
@@ -31,7 +32,6 @@ func (s *Server) MountHandlers() {
 
 	// Mount all handlers here
 
-	s.Router.Route("/ping", func(r chi.Router) {
-		r.Get("/", getPing)
-	})
+	s.Router.Route("/ping", handlePing)
+
 }
