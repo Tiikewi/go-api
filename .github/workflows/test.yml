@@ -18,7 +18,7 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: ubuntu
+    container: backend
     steps:
       - uses: actions/checkout@v2
       - name: Add empty .env file
