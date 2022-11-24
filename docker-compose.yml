@@ -33,6 +33,10 @@ services:
     env_file:
       - .env
 
+networks:
+  default:
+    driver: bridge
+
 volumes:
   db-volume:
     name: ${DB_VOLUME_NAME}
