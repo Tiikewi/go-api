@@ -1,6 +1,8 @@
 package api
 
 import (
+	"database/sql"
+
 	"github.com/go-chi/chi/v5"
 
 	_ "go-api/docs"
@@ -10,11 +12,13 @@ import (
 
 type Server struct {
 	Router *chi.Mux
+	DB     *sql.DB
 }
 
-func CreateNewServer() *Server {
+func CreateNewServer(db *sql.DB) *Server {
 	s := &Server{}
 	s.Router = chi.NewRouter()
+	s.DB = db
 
 	s.MountHandlers()
 
@@ -32,6 +36,7 @@ func (s *Server) MountHandlers() {
 	// Mount all handlers here
 
 	s.Router.Route("/ping", func(r chi.Router) {
-		r.Get("/", getPing)
+		r.Get("/", s.getPing)
 	})
+
 }

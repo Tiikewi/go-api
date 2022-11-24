@@ -26,7 +26,7 @@ func ConnectToDB() *sql.DB {
 	}
 
 	// Print version of mariadb.
-	fmt.Println("Connected to MariaDB version: ", getVersion(db))
+	fmt.Println("Connected to MariaDB version: ", GetVersion(db))
 
 	return db
 }

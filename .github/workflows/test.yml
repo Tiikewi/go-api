@@ -1,9 +1,9 @@
 name: Run tests
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 env:
   MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
@@ -13,7 +13,7 @@ env:
   MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
   MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
   DB_VOLUME_NAME: db-volume
-  
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -22,8 +22,8 @@ jobs:
       - name: Add empty .env file
         run: touch .env
       - name: Build the stack
-        run: docker-compose up -d
+        run: docker-compose up
       - name: Build go
-        run: go build ./... 
+        run: docker exec backend-container go build ./...
       - name: Test
-        run: go test ./... -v 
+        run: docker exec backend-container go test ./... -v

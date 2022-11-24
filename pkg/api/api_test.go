@@ -1,20 +1,47 @@
 package api
 
 import (
+	"database/sql"
 	"encoding/json"
+	"fmt"
+	"go-api/pkg/db"
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 )
 
+var s *Server
+var DB *sql.DB
+
+func setup() {
+	port := ":" + os.Getenv("APP_PORT")
+	// If no PORT variable given, default 8080.
+	if port == ":" {
+		port = ":8080"
+	}
+
+	DB = db.ConnectToDB()
+
+	s = CreateNewServer(DB)
+
+	fmt.Println("Server starting on port", port)
+	http.ListenAndServe(port, s.Router)
+}
+
 func TestPing(t *testing.T) {
+	os.Setenv("ENVIROMENT", "test")
+	defer os.Unsetenv("ENVIROMENT")
+	setup()
+	defer DB.Close()
+
 	req := httptest.NewRequest(http.MethodGet, "/ping", nil)
 	w := httptest.NewRecorder()
 
-	const expectedMsg = "pong"
+	const expectedMsg = "10.9.3-MariaDB-1:10.9.3+maria~ubu2204"
 
-	getPing(w, req)
+	s.getPing(w, req)
 	res := w.Result()
 	defer res.Body.Close()
 
@@ -31,3 +58,5 @@ func TestPing(t *testing.T) {
 	}
 
 }
+
+//
