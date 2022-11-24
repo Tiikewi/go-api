@@ -1,6 +1,7 @@
 package db
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -34,7 +35,14 @@ func GetVersion() string {
 		log.Fatal("Error when trying to connect to DB. Err:", err)
 	}
 	var version string
-	row.Scan(&version)
+	err = row.Scan(&version)
+	if err != nil {
+		log.Fatal("Error: ", err)
+	}
+
+	if version == "" {
+		fmt.Println("VERSION WAS EMPTY STRING")
+	}
 
 	return version
 }
