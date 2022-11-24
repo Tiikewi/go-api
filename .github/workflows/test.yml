@@ -1,9 +1,9 @@
 name: Run tests
 on:
   push:
-    branches: ['main']
+    branches: ["main"]
   pull_request:
-    branches: ['main']
+    branches: ["main"]
 
 env:
   MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
@@ -18,7 +18,11 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
+<<<<<<< HEAD
     container: backend-container
+=======
+    container: ubuntu
+>>>>>>> db9a3aaed64d0c4f05618010902a0ca357681fdf
     steps:
       - uses: actions/checkout@v2
       - name: Add empty .env file
