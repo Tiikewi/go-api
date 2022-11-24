@@ -20,20 +20,13 @@ var (
 func ConnectToDB() *sql.DB {
 	sqlInfo := fmt.Sprintf("%s:%s@tcp(%s)/%s", user, password, dbContainerName, dbname)
 
-	// Create the database handle, confirm driver is present
-
 	db, err := sql.Open("mysql", sqlInfo)
 	if err != nil {
 		log.Fatal("Error when trying to connect to DB. Err:", err)
 	}
 
-	var version string
-	err = db.QueryRow("SELECT VERSION()").Scan(&version)
-	if err != nil {
-		log.Fatal("Error when trying to connect to DB. Err:", err)
-	}
-
-	fmt.Println("Connected to MariaDB version:", version)
+	// Print version of mariadb.
+	fmt.Println("Connected to MariaDB version: ", getVersion(db))
 
 	return db
 }

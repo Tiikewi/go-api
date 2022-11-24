@@ -20,6 +20,10 @@ import (
 
 func main() {
 	port := ":" + os.Getenv("APP_PORT")
+	// If no PORT variable given, default 8080.
+	if port == ":" {
+		port = ":8080"
+	}
 
 	s := api.CreateNewServer()
 
