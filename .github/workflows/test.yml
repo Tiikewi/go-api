@@ -22,8 +22,6 @@ jobs:
       - name: Add empty .env file
         run: touch .env
       - name: Build the stack
-        run: docker-compose up -d
-      - name: Build go
-        run: go build ./...
+        run: docker-compose up
       - name: Test
-        run: go test ./... -v
+        run: docker exec backend-container go test ./... -v
