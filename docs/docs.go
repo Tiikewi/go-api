@@ -34,12 +34,29 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/types.PingResponse"
                         }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/types.ErrorResponse"
+                        }
                     }
                 }
             }
         }
     },
     "definitions": {
+        "types.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "statusCode": {
+                    "type": "integer"
+                }
+            }
+        },
         "types.PingResponse": {
             "type": "object",
             "properties": {
