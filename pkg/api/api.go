@@ -27,8 +27,7 @@ func (s *Server) MountHandlers() {
 	s.Router.Use(middleware.Logger)
 
 	// Swagger documentation
-	s.Router.Get("/swagger/*", httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:8080/swagger/doc.json")))
+	s.Router.Mount("/swagger", httpSwagger.WrapHandler)
 
 	// Mount all handlers here
 
