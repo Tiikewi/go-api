@@ -9,6 +9,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+var DB *sql.DB
+
 var (
 	// host            = os.Getenv("MYSQL_HOST")
 	dbContainerName = "mariadb"
@@ -17,7 +19,7 @@ var (
 	dbname          = os.Getenv("MYSQL_DATABASE")
 )
 
-func ConnectToDB() *sql.DB {
+func ConnectToDB() {
 	sqlInfo := fmt.Sprintf("%s:%s@tcp(%s)/%s", user, password, dbContainerName, dbname)
 
 	db, err := sql.Open("mysql", sqlInfo)
@@ -25,8 +27,8 @@ func ConnectToDB() *sql.DB {
 		log.Fatal("Error when trying to connect to DB. Err:", err)
 	}
 
-	// Print version of mariadb.
-	fmt.Println("Connected to MariaDB version: ", getVersion(db))
+	DB = db
 
-	return db
+	// Print version of mariadb.
+	fmt.Println("Connected to MariaDB version: ", GetVersion())
 }

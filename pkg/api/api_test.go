@@ -4,19 +4,19 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
-	"net/http/httptest"
+	"os"
 	"testing"
 )
 
 func TestPing(t *testing.T) {
-	req := httptest.NewRequest(http.MethodGet, "/ping", nil)
-	w := httptest.NewRecorder()
+	const expectedMsg = "10.9.3-MariaDB-1:10.9.3+maria~ubu2204"
+	os.Setenv("ENVIROMENT", "test")
+	defer os.Unsetenv("ENVIROMENT")
 
-	const expectedMsg = "pong"
-
-	getPing(w, req)
-	res := w.Result()
-	defer res.Body.Close()
+	res, err := http.Get("http://localhost:8080/ping")
+	if err != nil {
+		t.Error("Error when making request to /ping. Error: ", err)
+	}
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
@@ -24,7 +24,10 @@ func TestPing(t *testing.T) {
 	}
 
 	response := make(map[string]string)
-	json.Unmarshal(body, &response)
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		t.Error("Invalid response")
+	}
 
 	if response["message"] != expectedMsg {
 		t.Error("Expected message: ", expectedMsg, ", Got", response["message"])
